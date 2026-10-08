@@ -9,6 +9,7 @@ export function blockedPreviewPath(pathname: string): boolean {
     }
   } catch { return true; }
   path = path.replace(/\\/g, "/").replace(/\/{2,}/g, "/");
+  path = new URL(path, "https://preview.invalid").pathname;
   return /^\/(?:admin|api)(?:\/|$)/i.test(path)
     || /(?:^|\/)\.(?:env|git)(?:[./]|$)/i.test(path)
     || /\.map$/i.test(path);

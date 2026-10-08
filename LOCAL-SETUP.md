@@ -32,3 +32,14 @@ The original starter documentation remains in `README.md`.
 The header language selector switches the storefront between English and Myanmar and remembers the selection in this browser. In Admin → All storefront content, select the content language and save each version separately. Product forms include optional Myanmar names and descriptions. Existing pre-switcher Myanmar content is retained in the Myanmar version. Carousel images are shared between both languages.
 
 Default labels and sample content translations live in `lib/translations.ts`; custom content stays in browser localStorage as described above.
+
+## Free Cloudflare client preview
+
+This source includes a standalone, database-free Cloudflare Workers review deployment. Sign in to your own Cloudflare account with its free Workers plan; do not enable a paid plan.
+
+```sh
+PATH="$PWD/.local-node/bin:$PATH" node --import ./scripts/sites-env.mjs ./node_modules/wrangler/bin/wrangler.js login
+./scripts/local.sh deploy:preview
+```
+
+Use the HTTPS URL printed after a successful deployment. The preview blocks admin/API routes and writes; the local development admin is unchanged. See `SECURITY.md` for the controls and remaining limitations.
