@@ -1,24 +1,31 @@
-# Client preview security
+# Hosted admin and storefront security
 
-The deployed website is a read-only business review. The original administration UI remains a local development demo; it is not production authentication.
+The live `uksein-craft` Worker hosts the storefront and `/admin`. The public header has no admin link. `/admin` displays a login form; all private reads and writes require a server-validated session. Hiding a link is not an authorization control.
 
-## Public deployment controls
+## Authentication and authorization
 
-- Admin and API routes are blocked in the Worker, including encoded path variants.
-- Only GET and HEAD are allowed. Public mutation requests return 405.
-- Development admin imports, password checks, and demo admin session code are removed from the public build.
-- HTML scripts receive a fresh nonce matching a restrictive Content Security Policy. Framing, object embedding, cross-origin forms, and nonessential browser permissions are blocked.
-- HTTPS responses use HSTS; responses also have nosniff and a referrer policy.
-- HTML is not cached because its nonce changes per response. Source maps and sensitive dotfile paths are blocked.
-- The standalone Cloudflare review deployment has no database, storage, or paid services attached.
-- No secrets, browser sessions, dependency folders, local runtimes, or generated output are committed.
+- A randomly generated 192-bit password is hashed with scrypt (N=32768, r=8, p=3) and a random salt. Only the hash and salt are installed as Cloudflare secrets; no password is shipped in browser code or committed to Git.
+- Sessions use independent random 256-bit tokens, stored as hashes in the private Durable Object. Cookies use `__Host-`, `HttpOnly`, `Secure`, `SameSite=Strict`, `Path=/`, and an eight-hour lifetime. Logout revokes the server session. Updating the password hash invalidates existing sessions.
+- Login attempts are limited to five per 15 minutes per source IP; attempt counters persist across Worker restarts. IP keys are salted hashes. Expired sessions/counters are cleaned by an alarm.
+- Every admin API read/write is authenticated at the Worker/DO boundary. The original unauthenticated D1 CRUD route is disabled. Unrecognized and encoded route variants fail closed.
+- Mutations require a same-origin `Origin` and JSON content type. Cross-site requests are rejected. The public `/api/storefront` endpoint exposes only catalog, categories, events, and storefront content; it never returns orders or credentials.
 
-## Verification performed
+## Data and browser controls
 
-Production storefront HTTP 200; admin and API HTTP 404; POST HTTP 405. All seven rendered script elements matched the response CSP nonce. Public bundles contained neither the demo password nor the demo admin session key. Production dependency audit reported zero findings before final tooling updates; patched framework packages and lockfile are included.
+- SQLite-backed Durable Objects provide shared, persistent data on [Cloudflare Workers Free](https://developers.cloudflare.com/durable-objects/platform/pricing/). No D1/R2/paid services are attached. Free usage limits apply.
+- Writes validate the resource shape, string/count limits, safe image types and URLs, and a 1 MB request cap. Uploaded images must be PNG/JPEG/WebP/GIF under 450 KB. Larger assets should use HTTPS image URLs.
+- Per-resource revisions prevent silently overwriting changes from another admin session. Failed saves display an error; they are not marked as published.
+- HTML uses per-response script nonces and a Content Security Policy. Framing is blocked; HTTPS uses HSTS. Responses have nosniff, referrer and browser-permission controls. HTML and API data are not cached. Dotfiles and source maps are blocked.
+- Admin data is not placed in localStorage. The hosted storefront reads shared public data; local development retains the original browser-only demo.
 
-## Limits
+## Verification
 
-This is a client preview, not a production commerce system. Browser-saved content remains local to each browser. Real orders, payments, shared content management, and production administration need server-side authentication, authorization, persistent data, and operational controls before launch.
+TypeScript check and production build passed. HTTP integration tests cover authentication, cookie attributes, CSRF, persistent writes/public reads, private order exclusion, revision conflicts, image validation, logout revocation, encoded paths, and login rate limiting. Production bundles contain no old demo password/session marker or seeded demo orders.
 
-The full development-tool audit still reports the unpatched `braces` issue and dependent build/lint tooling. Those tools are not exposed to public requests. Build only trusted source locally, keep the development server on loopback, and review future upstream fixes. No system is guaranteed completely secure by these changes.
+## Operation
+
+Private bootstrap credentials are saved in ignored `.sites-runtime/admin-credentials.txt` with owner-only filesystem permissions. Keep that file private. Cloudflare account access controls password rotation and deployment. Back up content before extensive edits. A local browser's pre-existing demo edits are not automatically imported into the hosted store.
+
+This is a small admin CMS for client review. Real checkout/payment/order intake is not implemented. There is one administrator; MFA, account recovery, audit history, and multi-user roles are not implemented. Do not treat this as a complete production commerce system.
+
+The development-tool audit still reports the upstream `braces` issue and dependent build/lint tooling. Build only trusted source and keep local dev servers on loopback. No security changes guarantee a system is completely secure.

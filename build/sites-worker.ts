@@ -1,14 +1,20 @@
 import { blockedPreviewPath, securePreviewResponse } from "../lib/preview-security";
+import { handleAdminApi, type AdminEnv } from "../lib/admin-store";
+export { AdminStore } from "../lib/admin-store";
 import handler from "vinext/server/fetch-handler";
 import { runWithConnectorBinding } from "../lib/connector-context";
 import type { ConnectorBinding } from "../lib/connector-contract.mjs";
 
 export default {
-  async fetch(request: Request, env: Cloudflare.Env, ctx: ExecutionContext<{ CONNECTORS?: ConnectorBinding }>) {
+  async fetch(request: Request, env: Cloudflare.Env & Partial<AdminEnv> & { ADMIN_ENABLED?: string }, ctx: ExecutionContext<{ CONNECTORS?: ConnectorBinding }>) {
     const url = new URL(request.url);
     const nonce = btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(18))));
     if (!import.meta.env.DEV) {
-      if (blockedPreviewPath(url.pathname)) return securePreviewResponse(new Response("Not found", { status: 404 }), nonce, url.protocol === "https:");
+      const enabled = env.ADMIN_ENABLED === "true" && !!env.CMS;
+      if (enabled && (url.pathname === "/api/storefront" || /^\/api\/admin\/[a-z_/]+$/.test(url.pathname))) {
+        return securePreviewResponse(await handleAdminApi(request, env), nonce, url.protocol === "https:");
+      }
+      if (blockedPreviewPath(url.pathname) && !(enabled && url.pathname === "/admin")) return securePreviewResponse(new Response("Not found", { status: 404 }), nonce, url.protocol === "https:");
       if (!["GET", "HEAD"].includes(request.method)) return securePreviewResponse(new Response("Method not allowed", { status: 405, headers: { Allow: "GET, HEAD" } }), nonce, url.protocol === "https:");
     }
     let binding = ctx.props?.CONNECTORS;

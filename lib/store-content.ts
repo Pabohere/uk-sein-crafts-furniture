@@ -1,3 +1,4 @@
+import { publicData } from "./public-data";
 import { myanmar, type Language } from "@/lib/translations";
 import { textLanguage } from "@/lib/typography";
 export type EventPost = { id: string; date: string; title: string; image: string; button: string };
@@ -12,6 +13,8 @@ export const saveEvents = (events: EventPost[]) => localStorage.setItem("uksein_
 const translateValue = (value: unknown): any => typeof value === "string" ? myanmar[value] ?? value : Array.isArray(value) ? value.map(translateValue) : value && typeof value === "object" ? Object.fromEntries(Object.entries(value).map(([key, item]) => [key, translateValue(item)])) : value;
 export const defaultContentForLanguage = (language: Language): StoreContent => language === "my" ? translateValue(defaultContent) : defaultContent;
 export function readContent(language: Language = "en"): StoreContent {
+  const shared = publicData<StoreContent>("content_" + language);
+  if (shared) return shared;
   const defaults = defaultContentForLanguage(language);
   if (typeof window === "undefined") return defaults;
   const legacy = readLegacyContent();
@@ -27,6 +30,6 @@ export function saveContent(content: StoreContent, language: Language = "en") {
   localStorage.setItem("uksein_content", JSON.stringify({ ...legacy, home: { ...legacy.home, heroImages: content.home.heroImages } }));
 }
 export function readEvents(language: Language = "en"): EventPost[] {
-  const events = readLegacyEvents();
+  const events = publicData<EventPost[]>("events") ?? readLegacyEvents();
   return language === "my" ? translateValue(events) : events;
 }

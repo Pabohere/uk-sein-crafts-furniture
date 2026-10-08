@@ -43,3 +43,21 @@ PATH="$PWD/.local-node/bin:$PATH" node --import ./scripts/sites-env.mjs ./node_m
 ```
 
 Use the HTTPS URL printed after a successful deployment. The preview blocks admin/API routes and writes; the local development admin is unchanged. See `SECURITY.md` for the controls and remaining limitations.
+
+## Hosted administration
+
+The hosted `/admin` uses server authentication and shared SQLite-backed Durable Object storage. `scripts/create-admin-secrets.mjs` creates a private random bootstrap password and its scrypt hash in ignored `.sites-runtime/` files. Do not commit or send these files to clients.
+
+First setup:
+
+```sh
+./scripts/local.sh build
+.local-node/bin/node scripts/prepare-cloudflare-preview.mjs
+.local-node/bin/node scripts/create-admin-secrets.mjs
+PATH="$PWD/.local-node/bin:$PATH" node --import ./scripts/sites-env.mjs ./node_modules/wrangler/bin/wrangler.js secret bulk .sites-runtime/admin-secrets.json --config dist/server/wrangler-preview.json
+./scripts/local.sh deploy:preview
+```
+
+Ordinary deployments retain existing secrets and data. Do not regenerate bootstrap credentials unless intentionally rotating the password; updating the Cloudflare hash revokes existing sessions. Follow `SECURITY.md` for limits and controls.
+
+For local production API checks, generate the admin secrets, copy their key/value pairs into ignored `dist/server/.dev.vars`, prepare the preview configuration, and run Wrangler locally on loopback. `tests/admin-http.mjs` reads the private test credentials, performs reversible catalog edits, and restores them. It is intended for a disposable local test store, not production.

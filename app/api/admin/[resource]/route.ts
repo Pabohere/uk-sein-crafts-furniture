@@ -1,6 +1,7 @@
-import { eq } from "drizzle-orm";import { getDb } from "@/db";import * as schema from "@/db/schema";
-const tables:Record<string,any>={categories:schema.categories,products:schema.products,orders:schema.orders,content:schema.siteContent,events:schema.events,contacts:schema.contactDetails};const t=(r:string)=>{if(!tables[r])throw new Error("Unknown resource");return tables[r]};
-export async function GET(_:Request,{params}:{params:Promise<{resource:string}>}){try{const{resource}=await params;return Response.json({data:await getDb().select().from(t(resource))})}catch(e){return Response.json({error:e instanceof Error?e.message:"Database unavailable"},{status:500})}}
-export async function POST(r:Request,{params}:{params:Promise<{resource:string}>}){try{const{resource}=await params;const[data]=await getDb().insert(t(resource)).values(await r.json()).returning();return Response.json({data},{status:201})}catch(e){return Response.json({error:e instanceof Error?e.message:"Unable to save"},{status:500})}}
-export async function PATCH(r:Request,{params}:{params:Promise<{resource:string}>}){try{const{resource}=await params;const{id,...data}=await r.json();const[updated]=await getDb().update(t(resource)).set({...data,updatedAt:new Date().toISOString()}).where(eq(t(resource).id,id)).returning();return Response.json({data:updated})}catch(e){return Response.json({error:e instanceof Error?e.message:"Unable to update"},{status:500})}}
-export async function DELETE(r:Request,{params}:{params:Promise<{resource:string}>}){try{const{resource}=await params;const{id}=await r.json();await getDb().delete(t(resource)).where(eq(t(resource).id,id));return Response.json({ok:true})}catch(e){return Response.json({error:e instanceof Error?e.message:"Unable to delete"},{status:500})}}
+// Administration API is authenticated and handled at the Worker boundary.
+// The old unauthenticated database CRUD endpoint is intentionally unavailable.
+const unavailable = () => Response.json({ error: "Not found." }, { status: 404 });
+export const GET = unavailable;
+export const POST = unavailable;
+export const PATCH = unavailable;
+export const DELETE = unavailable;
