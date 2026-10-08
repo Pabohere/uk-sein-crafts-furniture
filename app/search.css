@@ -1,0 +1,8 @@
+.site-search button{display:grid;place-items:center;padding:0;margin:0 2px 0 0}.search-results{margin:-10px 0 25px;color:#66727a;font-size:.9rem}.search-results b{color:#103f60}.search-empty{padding:36px 0;color:#66727a}.admin-global-search{display:flex!important;align-items:center;gap:8px;width:min(310px,28vw);padding:9px 12px;border:1px solid #d9ceba;background:#fffdf8;color:#153040}.admin-global-search input{min-width:0;flex:1;border:0;outline:0;background:transparent;font-size:.8rem}@media(max-width:760px){.admin-global-search{display:none!important}}
+
+/* Give product searches more room in the desktop header. */
+.site-search { width: clamp(180px, 18vw, 280px); }
+.site-search input { width: 100%; min-width: 0; flex: 1; }
+@media (min-width: 851px) and (max-width: 1100px) {
+  .site-search { width: 150px; }
+}

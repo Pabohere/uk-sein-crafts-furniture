@@ -1,0 +1,10 @@
+.nav { height: 72px; }
+.brand-logo { display: block; width: 142px; height: 52px; }
+.brand-logo img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.footer-logo { width: 184px; height: 72px; }
+.promo { height: 34px; padding: 0; overflow: hidden; display: block; position: relative; }
+.promo-rotator { position: absolute; top: 8px; left: 0; display: flex; width: max-content; white-space: nowrap; will-change: transform; animation: promo-scroll 28s linear infinite; }
+.promo-rotator > span { display: inline-block; padding: 0 34px; line-height: 18px; }
+.promo-rotator > span::after { content: "•"; margin-left: 34px; color: #f4bc60; }
+@keyframes promo-scroll { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-50%, 0, 0); } }
+@media (max-width: 760px) { .nav { height: 64px; } .brand-logo { width: 118px; height: 44px; } .footer-logo { width: 160px; height: 64px; } }

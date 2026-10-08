@@ -1,0 +1,1 @@
+.nav-links a{position:relative;padding:8px 2px}.nav-links a.active{color:#a36d1f;font-weight:bold}.nav-links a.active:after{content:"";position:absolute;left:0;right:0;bottom:-10px;height:2px;background:#f4bc60}@media(max-width:700px){.nav-links a.active:after{bottom:-7px}}

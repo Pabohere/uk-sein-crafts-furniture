@@ -1,0 +1,6 @@
+/* Contact drawer stays usable on every screen height. */
+.contact-drawer{height:100vh;min-height:0;overflow-y:auto;overscroll-behavior:contain}.contact-drawer::-webkit-scrollbar{width:8px}.contact-drawer::-webkit-scrollbar-thumb{background:#c8ae83;border-radius:9px}
+/* Home-only horizontal product rail: drag or swipe left/right. */
+main:has(>.hero) .product-grid{display:flex;overflow-x:auto;gap:24px;scroll-snap-type:x mandatory;padding:4px;scrollbar-width:none;cursor:grab}main:has(>.hero) .product-grid:active{cursor:grabbing}main:has(>.hero) .product{flex:0 0 min(350px,82vw);scroll-snap-align:start}main:has(>.hero) .product-grid::-webkit-scrollbar{display:none}
+/* Keep the logo glyph optically centered. */
+.brand-mark{line-height:1!important;padding-top:2px;align-items:center!important}.footer-brand .brand-mark{vertical-align:middle;margin-bottom:8px}

@@ -1,0 +1,17 @@
+{
+  "terminal.integrated.env.osx": {
+    "PATH": "${workspaceFolder}/.local-node/bin:${env:PATH}"
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "files.watcherExclude": {
+    "**/.local-node/**": true,
+    "**/.wrangler/**": true,
+    "**/dist/**": true
+  },
+  "search.exclude": {
+    "**/.local-node": true,
+    "**/.wrangler": true,
+    "**/dist": true,
+    "**/package-lock.json": true
+  }
+}

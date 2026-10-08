@@ -1,0 +1,32 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Website: Start development server",
+      "type": "process",
+      "command": "/bin/sh",
+      "args": ["${workspaceFolder}/scripts/local.sh", "dev", "--", "--hostname", "127.0.0.1"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "Website: Build",
+      "type": "process",
+      "command": "/bin/sh",
+      "args": ["${workspaceFolder}/scripts/local.sh", "build"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": []
+    },
+    {
+      "label": "Website: Install dependencies",
+      "type": "process",
+      "command": "/bin/sh",
+      "args": ["${workspaceFolder}/scripts/local.sh", "install:ci"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    }
+  ]
+}

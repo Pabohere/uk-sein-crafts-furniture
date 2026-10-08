@@ -1,0 +1,53 @@
+/* Keep Myanmar vowel marks clear of adjacent lines, including wrapped headings. */
+:lang(my) {
+  font-family: "Noto Sans Myanmar", "Pyidaungsu", "Myanmar Text", "Myanmar MN", sans-serif;
+  line-height: 1.8;
+  letter-spacing: normal;
+  font-style: normal;
+}
+.hero h1:lang(my),
+.about-hero h1:lang(my),
+.page-hero h1:lang(my) {
+  font-family: "Noto Sans Myanmar", "Pyidaungsu", "Myanmar Text", "Myanmar MN", sans-serif;
+  font-size: clamp(2.2rem, 4.5vw, 4rem);
+  line-height: 1.75;
+  letter-spacing: normal;
+}
+h1:lang(my) em,
+h2:lang(my) em {
+  font-style: normal;
+}
+h2:lang(my) {
+  font-family: "Noto Sans Myanmar", "Pyidaungsu", "Myanmar Text", "Myanmar MN", sans-serif;
+  line-height: 1.8;
+  letter-spacing: normal;
+}
+/* Let a longer translated heading increase the hero's height. */
+.hero:has(h1:lang(my)) .hero-copy {
+  max-width: 900px;
+}
+
+.language-switcher {
+  border: 1px solid #d9ceba;
+  background: #fffdf8;
+  color: #153040;
+  padding: 7px 8px;
+  border-radius: 3px;
+  font-size: .78rem;
+  max-width: 105px;
+}
+.language-switcher:focus-visible { outline: 2px solid #a36d1f; outline-offset: 3px; }
+html[lang="my"] .nav-links { gap: 18px; }
+html[lang="my"] .nav { min-height: 86px; height: auto; padding-top: 10px; padding-bottom: 10px; gap: 16px; }
+html[lang="my"] .promo { height: 42px; }
+html[lang="my"] .promo-rotator > span { line-height: 26px; }
+html[lang="my"] .detail h1 { font: clamp(2rem, 4vw, 3.5rem)/1.75 "Myanmar MN", "Myanmar Text", sans-serif; letter-spacing: normal; }
+html[lang="my"] .nav-actions { gap: 10px; }
+@media (min-width: 851px) and (max-width: 1250px) {
+  .nav { flex-wrap: wrap; height: auto; padding-top: 12px; padding-bottom: 12px; gap: 16px; }
+  .nav-links { order: 3; width: 100%; justify-content: center; }
+}
+@media (max-width: 500px) {
+  .nav-actions { gap: 6px; }
+  .language-switcher { max-width: 90px; padding: 6px; }
+}
