@@ -1,6 +1,23 @@
-export const products = [
-  { n: "Cocoon Hanging Chair", c: "Seating", p: "385,000 MMK", i: "https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=900&q=80" },
-  { n: "Round Rattan Coffee Table", c: "Tables", p: "245,000 MMK", i: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&q=80" },
-  { n: "Sunburst Wall Mirror", c: "Decor", p: "98,000 MMK", i: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=900&q=80" },
-  { n: "Cane Lounge Chair", c: "Seating", p: "320,000 MMK", i: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=900&q=80" },
-] as const;
+type ProductSeed = { n: string; c: "Seating" | "Tables" | "Decor"; p: string; i: string };
+
+const images = {
+  Seating: "https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=900&q=80",
+  Tables: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&q=80",
+  Decor: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=900&q=80",
+} as const;
+
+const make = (c: ProductSeed["c"], rows: readonly (readonly [string, string])[]): ProductSeed[] =>
+  rows.map(([n, p]) => ({ n, c, p, i: images[c] }));
+
+// Demo catalog: 100 editable records, balanced across the storefront's three categories.
+export const products: ProductSeed[] = [
+  ...make("Seating", [
+    ["Cocoon Hanging Chair", "385,000 MMK"], ["Cane Lounge Chair", "320,000 MMK"], ["Rattan Reading Chair", "285,000 MMK"], ["Woven Accent Chair", "265,000 MMK"], ["Teak Frame Armchair", "410,000 MMK"], ["Natural Cane Dining Chair", "195,000 MMK"], ["Low Rattan Floor Chair", "175,000 MMK"], ["Sculpted Bamboo Stool", "95,000 MMK"], ["Braided Pouf Ottoman", "135,000 MMK"], ["Classic Director Chair", "225,000 MMK"], ["Round Back Bistro Chair", "210,000 MMK"], ["Rattan Rocking Chair", "365,000 MMK"], ["Wicker Butterfly Chair", "295,000 MMK"], ["Loom Weave Bench", "330,000 MMK"], ["Entryway Storage Bench", "345,000 MMK"], ["Curved Cane Loveseat", "560,000 MMK"], ["Sunroom Two Seat Sofa", "680,000 MMK"], ["Handwoven Bar Stool", "155,000 MMK"], ["Counter Height Cane Stool", "165,000 MMK"], ["Petal Back Chair", "245,000 MMK"], ["Bamboo Meditation Seat", "125,000 MMK"], ["Rattan Nursery Rocker", "350,000 MMK"], ["Woven Dining Bench", "295,000 MMK"], ["Cane Accent Stool", "88,000 MMK"], ["Heritage Easy Chair", "455,000 MMK"], ["Compact Balcony Chair", "185,000 MMK"], ["Nest Lounge Chair", "315,000 MMK"], ["Rattan Daybed", "720,000 MMK"], ["Banana Leaf Ottoman", "145,000 MMK"], ["Cane Office Chair", "275,000 MMK"], ["Woven Footstool", "78,000 MMK"], ["Carved Teak Stool", "150,000 MMK"], ["Rattan Recliner", "525,000 MMK"], ["Garden Conversation Chair", "305,000 MMK"],
+  ]),
+  ...make("Tables", [
+    ["Round Rattan Coffee Table", "245,000 MMK"], ["Oval Cane Coffee Table", "275,000 MMK"], ["Teak Top Dining Table", "890,000 MMK"], ["Rattan Side Table", "125,000 MMK"], ["Woven Bedside Table", "210,000 MMK"], ["Bamboo Console Table", "395,000 MMK"], ["Nest of Three Tables", "335,000 MMK"], ["Sunroom Tea Table", "165,000 MMK"], ["Cane Writing Desk", "495,000 MMK"], ["Compact Study Desk", "425,000 MMK"], ["Round Pedestal Table", "310,000 MMK"], ["Rattan Plant Stand", "72,000 MMK"], ["Low Living Table", "260,000 MMK"], ["Woven Tray Table", "145,000 MMK"], ["Carved Teak Side Table", "285,000 MMK"], ["Bamboo Bar Table", "375,000 MMK"], ["Cane Entry Console", "440,000 MMK"], ["Square Patio Table", "295,000 MMK"], ["Rattan TV Console", "585,000 MMK"], ["Open Shelf Console", "465,000 MMK"], ["Oval Dining Table", "975,000 MMK"], ["Foldable Balcony Table", "190,000 MMK"], ["Rattan Laptop Table", "155,000 MMK"], ["Teak Breakfast Table", "520,000 MMK"], ["Cane Lamp Table", "138,000 MMK"], ["Woven Cocktail Table", "230,000 MMK"], ["Rattan Display Table", "355,000 MMK"], ["Bamboo Serving Trolley", "420,000 MMK"], ["Natural Wood Desk", "650,000 MMK"], ["Rattan Craft Table", "390,000 MMK"], ["Petite Round Table", "175,000 MMK"], ["Teak Hall Table", "480,000 MMK"], ["Cane Coffee Table Set", "465,000 MMK"],
+  ]),
+  ...make("Decor", [
+    ["Sunburst Wall Mirror", "98,000 MMK"], ["Woven Wall Basket Set", "85,000 MMK"], ["Rattan Pendant Lamp", "165,000 MMK"], ["Cane Table Lamp", "145,000 MMK"], ["Handwoven Storage Basket", "72,000 MMK"], ["Natural Fiber Planter", "58,000 MMK"], ["Bamboo Photo Frame", "42,000 MMK"], ["Rattan Fruit Bowl", "65,000 MMK"], ["Wicker Floor Lantern", "118,000 MMK"], ["Cane Serving Tray", "68,000 MMK"], ["Braided Wall Plate", "55,000 MMK"], ["Teak Candle Holder", "48,000 MMK"], ["Woven Laundry Basket", "105,000 MMK"], ["Rattan Magazine Rack", "88,000 MMK"], ["Bamboo Coat Hook", "75,000 MMK"], ["Cane Room Divider", "390,000 MMK"], ["Woven Ceiling Shade", "185,000 MMK"], ["Rattan Tissue Box", "35,000 MMK"], ["Natural Reed Vase", "62,000 MMK"], ["Rattan Mirror Oval", "135,000 MMK"], ["Cane Picnic Basket", "115,000 MMK"], ["Woven Storage Trunk", "275,000 MMK"], ["Bamboo Book Stand", "82,000 MMK"], ["Rattan Umbrella Stand", "125,000 MMK"], ["Handmade Plant Hanger", "45,000 MMK"], ["Cane Wall Shelf", "155,000 MMK"], ["Braided Door Mat", "60,000 MMK"], ["Rattan Jewelry Box", "78,000 MMK"], ["Woven Bread Basket", "52,000 MMK"], ["Teak Incense Holder", "38,000 MMK"], ["Bamboo Table Organiser", "70,000 MMK"], ["Rattan Wine Rack", "210,000 MMK"], ["Cane Mirror Rectangle", "145,000 MMK"],
+  ]),
+];

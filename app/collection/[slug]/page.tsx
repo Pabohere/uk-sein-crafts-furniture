@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Footer, Header } from "@/components/store-shell";
 import { defaultCatalog, readCatalog, type CatalogProduct } from "@/lib/catalog";
+import { addToCart } from "@/lib/cart";
 
 const slugFor = (name: string) => name.toLowerCase().replaceAll(" ", "-");
 export default function ProductDetail() {
@@ -15,5 +16,5 @@ export default function ProductDetail() {
   const safeSlug = decodeURIComponent(String(slug));
   const product = catalog.find((item) => item.id === safeSlug || slugFor(item.name) === safeSlug);
   if (!product) return <main><Header /><section className="detail"><div><Link className="back-link" href="/collection">{t("← Back to collection")}</Link><h1>{t("Product not found")}</h1></div></section><Footer /></main>;
-  return <main><Header /><section className="detail motion-in"><img src={product.image} alt={(language === "my" && product.nameMy ? product.nameMy : t(product.name))} /><div><Link className="back-link" href="/collection">{t("← Back to collection")}</Link><p className="eyebrow">{t(product.category)}</p><h1>{(language === "my" && product.nameMy ? product.nameMy : t(product.name))}</h1><b>{product.price}</b><p>{(language === "my" && product.descriptionMy ? product.descriptionMy : t(product.description))}</p><div className="sizes">{product.sizes.map((size) => <span className={size === "M" ? "selected" : ""} key={size}>{size}</span>)}</div><button className="gold-button" type="button">{t("Add to basket")}&nbsp; +</button></div></section><Footer /></main>;
+  return <main><Header /><section className="detail motion-in"><img src={product.image} alt={(language === "my" && product.nameMy ? product.nameMy : t(product.name))} /><div><Link className="back-link" href="/collection">{t("← Back to collection")}</Link><p className="eyebrow">{t(product.category)}</p><h1>{(language === "my" && product.nameMy ? product.nameMy : t(product.name))}</h1><b>{product.price}</b><p>{(language === "my" && product.descriptionMy ? product.descriptionMy : t(product.description))}</p><div className="sizes">{product.sizes.map((size) => <span className={size === "M" ? "selected" : ""} key={size}>{size}</span>)}</div><button className="gold-button" type="button" onClick={() => addToCart(product)}>{t("Add to cart")}&nbsp; +</button></div></section><Footer /></main>;
 }

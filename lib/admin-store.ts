@@ -32,6 +32,15 @@ export class AdminStore extends DurableObject<AdminEnv> {
       const data:Record<string,unknown>={};for(const name of resourceNames.filter(n=>n!=='orders'))data[name]=(await read(name)).value;
       return json({data});
     }
+    if(path==='/api/orders' && request.method==='POST') {
+      if(request.headers.get('origin')!==url.origin || request.headers.get('sec-fetch-site')==='cross-site' || request.headers.get('content-type')?.split(';')[0]!=='application/json')return json({error:'Request rejected.'},403);
+      try {
+        const order=await body(request);
+        if(!validResource('orders',[order]))return json({error:'Please provide valid order details.'},400);
+        await storage.transaction(async txn => { const current=await read('orders'); await txn.put('data:orders',{value:[order,...(current.value as unknown[])],revision:current.revision+1}); });
+        return json({ok:true},201);
+      } catch { return json({error:'Unable to place your order.'},400); }
+    }
     if (!this.env.ADMIN_PASSWORD_HASH || !this.env.ADMIN_PASSWORD_SALT) return json({error:'Administration is unavailable.'},503);
     const mutation=!['GET','HEAD'].includes(request.method);
     let inputBody: any;

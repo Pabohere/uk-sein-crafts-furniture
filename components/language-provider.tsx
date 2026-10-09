@@ -1,19 +1,33 @@
 "use client";
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { setPublicData } from "@/lib/public-data";
 import { myanmar, type Language } from "@/lib/translations";
 const LanguageContext = createContext<{ language: Language; version: number; setLanguage: (language: Language) => void; t: (text: string) => string } | null>(null);
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [version, setVersion] = useState(0);
+  const publicDataSignature = useRef("");
   useEffect(() => {
     if (import.meta.env.DEV) return;
     const controller = new AbortController();
-    fetch("/api/storefront", { signal: controller.signal, cache: "no-store" }).then(async response => {
-      if (!response.ok) return;
-      const result = await response.json() as { data: Record<string, unknown> };
-      setPublicData(result.data); setVersion(v => v + 1); window.dispatchEvent(new Event("storage"));
-    }).catch(() => {});
-    return () => controller.abort();
+    const refreshPublicData = async () => {
+      try {
+        const response = await fetch("/api/storefront", { signal: controller.signal, cache: "no-store" });
+        if (!response.ok) return;
+        const result = await response.json() as { data: Record<string, unknown> };
+        const signature = JSON.stringify(result.data);
+        if (signature === publicDataSignature.current) return;
+        publicDataSignature.current = signature;
+        setPublicData(result.data);
+        setVersion(v => v + 1);
+        window.dispatchEvent(new Event("storage"));
+      } catch {
+        // Keep the last successful catalog visible if a refresh is interrupted.
+      }
+    };
+    void refreshPublicData();
+    const timer = window.setInterval(() => void refreshPublicData(), 15_000);
+    window.addEventListener("focus", refreshPublicData);
+    return () => { window.clearInterval(timer); window.removeEventListener("focus", refreshPublicData); controller.abort(); };
   }, []);
   const [language, updateLanguage] = useState<Language>("en");
   useEffect(() => {
