@@ -18,8 +18,11 @@ export default function CollectionCatalog() {
   useEffect(() => { const refresh = () => setCatalog(readCatalog()); refresh(); window.addEventListener("storage", refresh); return () => window.removeEventListener("storage", refresh); }, []);
   const categories = ["All", ...Array.from(new Set(catalog.map((product) => product.category)))];
   const visibleProducts = catalog.filter((product) => (filter === "All" || product.category === filter) && (!search || `${(language === "my" && product.nameMy ? product.nameMy : t(product.name))} ${t(product.category)} ${product.description} ${(language === "my" && product.nameMy ? product.nameMy : t(product.name))} ${t(product.category)} ${(language === "my" && product.descriptionMy ? product.descriptionMy : t(product.description))} ${product.price}`.toLowerCase().includes(search)));
-  const pageSize = 30;
-  const totalPages = Math.max(1, Math.ceil(visibleProducts.length / pageSize));
+  // Keep pages comfortably sized (maximum 30) while balancing the final page.
+  // This avoids a nearly empty last page when the catalog total is not divisible by 30.
+  const maxPageSize = 30;
+  const totalPages = Math.max(1, Math.ceil(visibleProducts.length / maxPageSize));
+  const pageSize = Math.max(1, Math.ceil(visibleProducts.length / totalPages));
   const currentPage = Math.min(page, totalPages);
   const pageProducts = visibleProducts.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 

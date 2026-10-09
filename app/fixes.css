@@ -4,3 +4,9 @@
 main:has(>.hero) .product-grid{display:flex;overflow-x:auto;gap:24px;scroll-snap-type:x mandatory;padding:4px;scrollbar-width:none;cursor:grab}main:has(>.hero) .product-grid:active{cursor:grabbing}main:has(>.hero) .product{flex:0 0 min(350px,82vw);scroll-snap-align:start}main:has(>.hero) .product-grid::-webkit-scrollbar{display:none}
 /* Keep the logo glyph optically centered. */
 .brand-mark{line-height:1!important;padding-top:2px;align-items:center!important}.footer-brand .brand-mark{vertical-align:middle;margin-bottom:8px}
+
+/* Keep the footer's three columns on the same content rails as the storefront. */
+footer{padding:70px max(7%,calc((100% - 1632px)/2));display:block}
+footer .footer-content{display:grid;grid-template-columns:1.5fr repeat(2,1fr);gap:40px;align-items:start;max-width:1632px;margin:0 auto}
+@media(max-width:800px){footer{padding:50px 8%}footer .footer-content{grid-template-columns:1fr 1fr}}
+@media(max-width:500px){footer .footer-content{grid-template-columns:1fr}}

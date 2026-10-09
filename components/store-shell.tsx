@@ -53,21 +53,14 @@ function CartDrawer({ cart, close, refresh }: { cart: CartLine[]; close: () => v
 export function Cards() {
   const { language, t } = useLanguage();
   const [catalog, setCatalog] = useState<CatalogProduct[]>(defaultCatalog);
-  const [page, setPage] = useState(1);
   useEffect(() => { const refresh = () => setCatalog(readCatalog()); refresh(); window.addEventListener("storage", refresh); return () => window.removeEventListener("storage", refresh); }, []);
   const pageSize = 10;
-  const totalPages = Math.max(1, Math.ceil(catalog.length / pageSize));
-  const currentPage = Math.min(page, totalPages);
-  const pageProducts = catalog.slice((currentPage - 1) * pageSize, currentPage * pageSize);
-  const choosePage = (nextPage: number) => {
-    setPage(nextPage);
-    document.querySelector(".shop")?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
+  const pageProducts = catalog.slice(0, pageSize);
   return <><div className="product-grid">{pageProducts.map((product) => <article className="product motion-card" key={product.id}>
     <div className="product-image"><img src={product.image} alt={(language === "my" && product.nameMy ? product.nameMy : t(product.name))} /><span>{t("NEW")}</span></div>
     <div className="product-meta"><div><p>{t(product.category)}</p><h3>{(language === "my" && product.nameMy ? product.nameMy : t(product.name))}</h3><div className="product-sizes">{product.sizes.map((size) => <button className={size === "M" ? "chosen" : ""} type="button" key={size}>{size}</button>)}</div></div><b>{product.price}</b></div>
     <Link className="add" href={`/collection/${product.id}`}>{t("View details")} <Plus size={17} /></Link>
-  </article>)}</div>{catalog.length > pageSize && <nav className="collection-pagination home-pagination" aria-label={t("Curated pieces pages")}><button type="button" onClick={() => choosePage(currentPage - 1)} disabled={currentPage === 1} aria-label={t("Previous page")}>←</button>{Array.from({ length: totalPages }, (_, index) => index + 1).map((number) => <button type="button" key={number} className={number === currentPage ? "active" : ""} aria-current={number === currentPage ? "page" : undefined} onClick={() => choosePage(number)}>{number}</button>)}<button type="button" onClick={() => choosePage(currentPage + 1)} disabled={currentPage === totalPages} aria-label={t("Next page")}>→</button></nav>}</>;
+  </article>)}</div></>;
 }
 
 export function ContactDrawer() {
@@ -78,5 +71,5 @@ export function ContactDrawer() {
 
 export function Footer() {
   const { language, t } = useLanguage();
-  return <footer><div className="footer-brand"><BrandLogo footer /></div><div><h3>{t("Showroom")}</h3><p>{t("No. 5, Nawaday Street")}<br />{t("Yangon, Myanmar")}</p></div><div><h3>{t("Contact")}</h3><p>09 771 778 064<br />09 784 058 903</p></div></footer>;
+  return <footer><div className="footer-content"><div className="footer-brand"><BrandLogo footer /></div><div><h3>{t("Showroom")}</h3><p>{t("No. 5, Nawaday Street")}<br />{t("Yangon, Myanmar")}</p></div><div><h3>{t("Contact")}</h3><p>09 771 778 064<br />09 784 058 903</p></div></div></footer>;
 }
