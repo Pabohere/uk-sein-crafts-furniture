@@ -2,6 +2,7 @@
 
 import { useLanguage } from "@/components/language-provider";
 import Link from "next/link";
+import { ProductOptions } from "@/components/product-options";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { defaultCatalog, readCatalog, type CatalogProduct } from "@/lib/catalog";
@@ -67,9 +68,7 @@ export default function CollectionCatalog() {
               <b>{product.price}</b>
             </div>
             <h3>{(language === "my" && product.nameMy ? product.nameMy : t(product.name))}</h3>
-            <div className="sizes" aria-label={t("Available sizes")}>
-              {product.sizes.map((size) => <span className={size === "M" ? "selected" : ""} key={size}>{size}</span>)}
-            </div>
+            <ProductOptions product={product} />
             <span className="add">{t("View details")}&nbsp; +</span>
           </Link>
         ))}

@@ -1,3 +1,4 @@
+import { StorefrontThemeProvider } from "@/components/storefront-theme";
 import { LanguageProvider } from "@/components/language-provider";
 import type { Metadata } from "next";
 import "./globals.css";
@@ -14,6 +15,10 @@ import "./carousel-admin.css";
 import "./contact-seamless.css";
 import "./search.css";
 import "./myanmar-typography.css";
+import "./product-options.css";
+import "./admin-studio.css";
+import "./storefront-theme.css";
+import "./storefront-polish.css";
 
 export const metadata: Metadata = {
   title: "Uk Sein Crafts & Furniture | Yangon",
@@ -34,7 +39,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased"><LanguageProvider>{children}</LanguageProvider></body>
+      <body className="antialiased"><LanguageProvider><StorefrontThemeProvider>{children}</StorefrontThemeProvider></LanguageProvider></body>
     </html>
   );
 }

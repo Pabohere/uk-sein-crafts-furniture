@@ -2,6 +2,7 @@
 import { Suspense } from "react";
 import { useLanguage } from "@/components/language-provider";
 import { Footer, Header } from "@/components/store-shell";
+import { PageHeader } from "@/components/page-header";
 import CollectionCatalog from "@/components/collection-catalog";
 
 export default function Collection() {
@@ -9,11 +10,7 @@ export default function Collection() {
   return (
     <main>
       <Header />
-      <section className="page-hero motion-in">
-        <p className="eyebrow">{t("SHOP ALL")}</p>
-        <h1>{t("The collection")}</h1>
-        <p>{t("Handmade pieces designed for warm, considered living.")}</p>
-      </section>
+      <PageHeader page="collection" eyebrow={t("SHOP ALL")} title={t("The collection")} intro={t("Handmade pieces designed for warm, considered living.")} />
       <section className="shop"><Suspense fallback={<p>{t("The collection")}</p>}><CollectionCatalog /></Suspense></section>
       <Footer />
     </main>
