@@ -11,7 +11,7 @@ export default {
     const nonce = btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(18))));
     if (!import.meta.env.DEV) {
       const enabled = env.ADMIN_ENABLED === "true" && !!env.CMS;
-      if (enabled && (url.pathname === "/api/storefront" || /^\/api\/admin\/[a-z_/]+$/.test(url.pathname))) {
+      if (enabled && (url.pathname === "/api/storefront" || url.pathname === "/api/orders" || /^\/api\/admin\/[a-z_/]+$/.test(url.pathname))) {
         return securePreviewResponse(await handleAdminApi(request, env), nonce, url.protocol === "https:");
       }
       if (blockedPreviewPath(url.pathname) && !(enabled && url.pathname === "/admin")) return securePreviewResponse(new Response("Not found", { status: 404 }), nonce, url.protocol === "https:");
