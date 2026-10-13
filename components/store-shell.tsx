@@ -2,6 +2,10 @@
 
 import { useLanguage, LanguageSwitcher } from "@/components/language-provider";
 import Link from "next/link";
+import { useStoreContent } from "@/components/use-store-content";
+import { defaultContact } from "@/lib/store-content";
+import { MapPin, Clock } from "lucide-react";
+import { textLanguage } from "@/lib/typography";
 import { BrandLogo } from "@/components/brand-logo";
 import { StorefrontThemeToggle } from "@/components/storefront-theme";
 import { PageHeader } from "@/components/page-header";
@@ -68,12 +72,37 @@ export function Cards() {
 }
 
 export function ContactDrawer() {
-  const { language, t } = useLanguage();
-  const rows = [["Call us", "09 771 778 064", Phone], ["Email us", "ukseinmmlocalcrafts@gmail.com", Mail], ["Request a callback", "Select a time", CalendarDays], ["Request a quote", "Discuss your requirements", FileText], ["Product brochure", "Download PDF or view online", BookOpen]];
-  return <main className="contact-page"><Header /><PageHeader page="contact" eyebrow={t("GET IN TOUCH")} title={t("Contact Uk Sein")} intro={t("We would love to help you find the right piece for your home.")} /><section className="contact-layout contact-with-banner"><aside className="contact-drawer"><Link className="drawer-close" href="/" aria-label={t("Back to home")}>×</Link><h2>{t("Contact Us")}</h2>{rows.map(([title, sub, Icon]: any) => <button className="contact-row" type="button" key={t(title)}><Icon size={28} /><span><b>{t(title)}</b><small>{t(sub)}</small></span><ArrowRight size={18} /></button>)}</aside></section></main>;
+  const { t } = useLanguage();
+  const content = useStoreContent();
+  const contact = content.contact || defaultContact;
+  const query = encodeURIComponent(contact.mapQuery.trim() || contact.address);
+  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${query}`;
+  const phoneLink = (phone: string) => `tel:${phone.replace(/[^+0-9]/g, "")}`;
+  return <main className="contact-page">
+    <Header />
+    <PageHeader page="contact" eyebrow={contact.eyebrow} title={<span lang={textLanguage(contact.title)}>{contact.title}</span>} intro={contact.intro} />
+    <section className="contact-information">
+      <div className="contact-info-card"><p className="eyebrow">{t("GET IN TOUCH")}</p><h2>{t("Contact Us")}</h2>
+        {contact.phone && <a className="contact-row" href={phoneLink(contact.phone)}><Phone size={24} /><span><b>{t("Call us")}</b><small>{contact.phone}</small></span><ArrowRight size={18} /></a>}
+        {contact.secondaryPhone && <a className="contact-row" href={phoneLink(contact.secondaryPhone)}><Phone size={24} /><span><b>{t("Contact")}</b><small>{contact.secondaryPhone}</small></span><ArrowRight size={18} /></a>}
+        {contact.email && <a className="contact-row" href={`mailto:${contact.email}`}><Mail size={24} /><span><b>{t("Email us")}</b><small>{contact.email}</small></span><ArrowRight size={18} /></a>}
+      </div>
+      <div className="contact-info-card showroom-info"><p className="eyebrow">{t("YANGON · MYANMAR")}</p><h2>{t("Showroom")}</h2><MapPin size={28} /><h3 lang={textLanguage(contact.showroomName)}>{contact.showroomName}</h3><p lang={textLanguage(contact.address)}>{contact.address}</p>
+        {contact.openingHours && <p className="showroom-hours"><Clock size={18} /><span lang={textLanguage(contact.openingHours)}>{contact.openingHours}</span></p>}
+        <a className="gold-button" href={mapsUrl} target="_blank" rel="noopener noreferrer">{t("Open in Google Maps")}<ArrowRight size={18} /></a>
+      </div>
+    </section>
+    <section className="showroom-map" aria-label={t("Showroom map")}>
+      <div className="map-heading"><div><p className="eyebrow">{t("Showroom")}</p><h2 lang={textLanguage(contact.showroomName)}>{contact.showroomName}</h2><p lang={textLanguage(contact.address)}>{contact.address}</p></div><a className="glass-map-link" href={mapsUrl} target="_blank" rel="noopener noreferrer">{t("Open in Google Maps")}<ArrowRight size={17} /></a></div>
+      <iframe title={`${contact.showroomName} — Google Maps`} src={`https://www.google.com/maps?q=${query}&output=embed`} loading="lazy" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen />
+    </section>
+    <Footer />
+  </main>;
 }
 
 export function Footer() {
   const { language, t } = useLanguage();
-  return <footer><div className="footer-content"><div className="footer-brand"><BrandLogo footer /></div><div><h3>{t("Showroom")}</h3><p>{t("No. 5, Nawaday Street")}<br />{t("Yangon, Myanmar")}</p></div><div><h3>{t("Contact")}</h3><p>09 771 778 064<br />09 784 058 903</p></div></div></footer>;
+  const content = useStoreContent();
+  const contact = content.contact || defaultContact;
+  return <footer><div className="footer-content"><div className="footer-brand"><BrandLogo footer /></div><div><h3>{t("Showroom")}</h3><p lang={textLanguage(contact.address)}>{contact.address}</p></div><div><h3>{t("Contact")}</h3><p>{contact.phone}{contact.secondaryPhone && <><br />{contact.secondaryPhone}</>}</p></div></div></footer>;
 }

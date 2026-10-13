@@ -1,0 +1,141 @@
+/* Shared brand direction, scoped to both local and hosted administration. */
+.admin-surface[data-admin-theme] {
+  --studio-bg: #f4f3ee;
+  --studio-shell: rgba(255,255,255,.23);
+  --studio-card: rgba(255,255,255,.34);
+  --studio-soft: rgba(235,227,211,.27);
+  --studio-field: rgba(255,255,255,.26);
+  --studio-text: #153040;
+  --studio-muted: #526575;
+  --studio-line: rgba(16,63,96,.14);
+  --studio-accent: #103f60;
+  --studio-accent-soft: rgba(16,63,96,.09);
+  --studio-gold: #8a5d18;
+  --admin-glass-edge: rgba(255,255,255,.8);
+  --admin-control-top: rgba(255,255,255,.65);
+  --admin-control-bottom: rgba(233,239,241,.16);
+  --admin-control-edge: rgba(255,255,255,.88);
+  --studio-shadow: 0 8px 24px rgba(12,42,62,.07), inset 0 1px 1px rgba(255,255,255,.75), inset 0 -1px 0 rgba(16,63,96,.06);
+  --admin-control-shadow: 0 4px 10px rgba(12,42,62,.08), inset 0 1px 2px rgba(255,255,255,.95), inset 0 -1px 2px rgba(16,63,96,.13);
+  --admin-danger: #a34339;
+  background: radial-gradient(ellipse at 0% 5%,#ede0c5,transparent 45%),radial-gradient(ellipse at 100% 40%,#d4e0e9,transparent 50%),#f4f3ee;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+}
+.admin-surface[data-admin-theme=dark] {
+  --studio-bg: #0c1b29;
+  --studio-shell: rgba(15,39,57,.28);
+  --studio-card: rgba(15,39,57,.48);
+  --studio-soft: rgba(40,67,85,.28);
+  --studio-field: rgba(25,53,73,.3);
+  --studio-text: #f0f4f7;
+  --studio-muted: #bdcbd5;
+  --studio-line: rgba(205,223,234,.18);
+  --studio-accent: #f4bc60;
+  --studio-accent-soft: rgba(244,188,96,.1);
+  --studio-gold: #f4bc60;
+  --admin-glass-edge: rgba(209,224,233,.25);
+  --admin-control-top: rgba(236,244,249,.15);
+  --admin-control-bottom: rgba(169,191,208,.04);
+  --admin-control-edge: rgba(235,243,248,.35);
+  --studio-shadow: 0 8px 24px rgba(0,15,26,.12), inset 0 1px 1px rgba(255,255,255,.2), inset 0 -1px 0 rgba(255,255,255,.05);
+  --admin-control-shadow: 0 4px 12px rgba(0,15,26,.14), inset 0 1px 2px rgba(255,255,255,.36), inset 0 -1px 2px rgba(0,15,26,.2);
+  --admin-danger: #efaaa1;
+  background: radial-gradient(ellipse at 0% 5%,#173a50,transparent 45%),radial-gradient(ellipse at 100% 40%,#162e47,transparent 50%),#0c1b29;
+}
+.admin-surface[data-admin-theme] .admin {
+  border-radius: 16px; border-color: var(--admin-glass-edge); background: var(--studio-shell); box-shadow: var(--studio-shadow);
+}
+.admin-surface[data-admin-theme] .admin header {
+  background: rgba(11,53,83,.94); color: #f0f4f7; border-color: rgba(244,188,96,.28);
+  box-shadow: inset 0 1px 1px #ffffff33; gap: 14px;
+}
+.admin-surface[data-admin-theme] .brand-logo { background: #fffdf1e6; border-radius: 8px; padding: 4px 8px; }
+.admin-surface[data-admin-theme] .admin-brand-label { border-color: #ffffff33; color: #f4bc60; }
+.admin-surface[data-admin-theme] .admin-navigation { background: rgba(16,63,96,.04); }
+.admin-surface[data-admin-theme] .admin-navigation button { border-radius: 999px; border: 1px solid transparent; }
+.admin-surface[data-admin-theme] .admin-navigation button:hover { background: var(--studio-field); }
+.admin-surface[data-admin-theme] .admin-navigation button.selected {
+  color: #f6d493; border-color: rgba(199,220,233,.6); background: linear-gradient(180deg,rgba(16,63,96,.82),rgba(11,53,83,.92));
+  box-shadow: var(--admin-control-shadow);
+}
+.admin-surface[data-admin-theme] :is(.commerce-stats article,.dashboard-panel,.admin-section-filters,.product-form,.admin-catalog article,.category-add,.category-cards>div,.order-list,.admin-events article,.admin-category-list,.login-card,.order-detail) {
+  border-radius: 12px; background: var(--studio-card); border-color: var(--admin-glass-edge); box-shadow: var(--studio-shadow);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.admin-surface[data-admin-theme] .commerce-stats .revenue-card {
+  background: linear-gradient(135deg,rgba(5,31,49,.85),rgba(16,63,96,.74)); border-color: #ffffff55;
+}
+.admin-surface[data-admin-theme] .revenue-card b { color: #fff; }
+.admin-surface[data-admin-theme] .revenue-card :is(small,em) { color: #d5e1ec; }
+.admin-surface[data-admin-theme] .revenue-card .metric-icon { color: #f4bc60; background: #ffffff18; }
+.admin-surface[data-admin-theme] .revenue-card::after { background: radial-gradient(circle,#f4bc6022,transparent 70%); }
+.admin-surface[data-admin-theme] :is(.dashboard h1,.dashboard h2,.dashboard h3,.login-card h1,.order-detail h2) { font-family: inherit; }
+.admin-surface[data-admin-theme] :is(.admin-head-actions a,.admin-head-actions button,.admin-login-theme button,.size-picker button,.admin-section-filters>button,.panel-heading>button,.panel-link,.crud-actions button,.category-list-actions button,.blog-add-image,.delete-button,.product-form>button,.content-form fieldset>button) {
+  border: 1px solid var(--admin-control-edge); border-radius: 999px;
+  background: linear-gradient(180deg,var(--admin-control-top),var(--admin-control-bottom)); color: var(--studio-text);
+  box-shadow: var(--admin-control-shadow); padding: 10px 15px; min-height: 40px;
+  -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+  transition: box-shadow .2s,transform .2s;
+}
+.admin-surface[data-admin-theme] .gold-button {
+  border: 1px solid rgba(255,234,192,.88); border-radius: 999px;
+  background: linear-gradient(180deg,rgba(255,245,218,.88),rgba(237,205,149,.72)); color: #103f60;
+  box-shadow: 0 4px 12px rgba(12,42,62,.1),inset 0 2px 2px #ffffffd9,inset 0 -2px 3px rgba(146,105,37,.17);
+  -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+}
+/* Preserve the gold primary treatment inside more specific form rules. */
+.admin-surface[data-admin-theme] :is(.product-form,.category-add,.dashboard-heading,.login-card,.order-detail) .gold-button {
+  border-radius: 999px; border: 1px solid rgba(255,234,192,.88);
+  background: linear-gradient(180deg,rgba(255,245,218,.88),rgba(237,205,149,.72)); color: #103f60;
+}
+.admin-surface[data-admin-theme] .gold-button:hover:not(:disabled) { box-shadow: 0 6px 14px #0c2a3e21,inset 0 2px 2px #ffffffd9,inset 0 -2px 3px #9269252b; transform: translateY(-1px); }
+.admin-surface[data-admin-theme] .admin header :is(.admin-head-actions a,.admin-head-actions button,.language-switcher,.admin-global-search) {
+  background: linear-gradient(180deg,#ffffff20,#ffffff08); color: #f0f4f7; border-color: #ffffff55;
+  box-shadow: 0 4px 10px #001b2c14,inset 0 1px 1px #ffffff55;
+}
+.admin-surface[data-admin-theme] .admin header .admin-global-search input { color: #f0f4f7; }
+.admin-surface[data-admin-theme] .admin header input::placeholder { color: #d5e1ec; }
+.admin-surface[data-admin-theme] :is(.product-form input,.product-form textarea,.product-form select,.category-add input,.order-detail select,.login-card input,.admin-section-filters select,.language-switcher,.admin-global-search,.admin-section-search) {
+  border-radius: 10px; background: var(--studio-field); color: var(--studio-text); border-color: var(--studio-line);
+  box-shadow: inset 0 1px 2px rgba(16,63,96,.04),inset 0 -1px 0 rgba(255,255,255,.3);
+}
+.admin-surface[data-admin-theme] .admin-section-filters>.admin-section-search { background: var(--studio-field); border-radius: 999px; }
+.admin-surface[data-admin-theme] .admin-section-search input { background: transparent; box-shadow: none; }
+.admin-surface[data-admin-theme] .language-switcher,.admin-surface[data-admin-theme] .admin-global-search { border-radius: 999px; }
+.admin-surface[data-admin-theme] .size-picker .chosen { color: #f6d493; background: #103f60cc; border-color: #b9cddbcc; }
+.admin-surface[data-admin-theme] :is(.product-image-slot,.blog-image-slot,.post-details-editor figure,.page-header-image-editor,.page-header-image-slots>div,.hero-image-manager label,.status-summary>div) {
+  background: var(--studio-field); border-color: var(--studio-line); border-radius: 10px;
+}
+.admin-surface[data-admin-theme] :is(.metric-icon,.admin-nav-count,.category-product-count) { border: 1px solid var(--studio-line); background: var(--studio-field); box-shadow: inset 0 1px 0 #ffffff33; }
+.admin-surface[data-admin-theme] .admin-category-list table { background: transparent; }
+.admin-surface[data-admin-theme] .admin-category-list th { background: var(--studio-field); }
+.admin-surface[data-admin-theme] .admin-catalog article>button { border-radius: 50%; min-height: 32px; min-width: 32px; background: var(--studio-field); }
+.admin-surface[data-admin-theme] :is(.delete-button,.crud-actions button:last-child,.category-list-actions button:last-child,.admin-catalog article>button:last-child,.admin-events article>button,.post-details-editor figure>button) { color: var(--admin-danger); }
+.admin-surface[data-admin-theme] .modal-backdrop { background: #09233766; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.admin-surface[data-admin-theme] .order-detail { background: var(--studio-card); }
+.admin-surface[data-admin-theme] :is(button,a,input,select,textarea):focus-visible { outline: 3px solid var(--studio-gold); outline-offset: 3px; }
+.admin-surface[data-admin-theme] .login-card { border-radius: 16px; }
+.admin-surface[data-admin-theme] .login-card label { color: var(--studio-text); }
+.admin-surface[data-admin-theme] .login-card input { background: var(--studio-field); }
+.admin-surface[data-admin-theme] .login-card>p:not(.eyebrow) { color: var(--studio-muted); }
+@media(max-width:800px) {
+  .admin-surface[data-admin-theme] .admin { border-radius: 12px; }
+  .admin-surface[data-admin-theme] .admin-navigation { padding: 10px; }
+  .admin-surface[data-admin-theme] .admin header { gap: 12px; }
+  .admin-surface[data-admin-theme] .admin-head-actions { flex-wrap: wrap; gap: 8px; }
+  .admin-surface[data-admin-theme] .admin-head-actions :is(a,button),.admin-surface[data-admin-theme] .language-switcher { font-size: .75rem; padding: 9px 12px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .admin-surface[data-admin-theme] * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+}
+@media(prefers-reduced-transparency:reduce) {
+  .admin-surface[data-admin-theme] { --studio-shell:#f8f3e9;--studio-card:#fffdf8;--studio-field:#f1f2ee;--admin-control-top:#fffdf8;--admin-control-bottom:#e9edf0; }
+  .admin-surface[data-admin-theme=dark] { --studio-shell:#122b3d;--studio-card:#183348;--studio-field:#1d3c52;--admin-control-top:#2c485c;--admin-control-bottom:#1d3c52; }
+}
+
+.admin-surface[data-admin-theme] .contact-settings-editor { margin-top:28px; }
+.admin-surface[data-admin-theme] .contact-settings-editor>p { font-size:.82rem; line-height:1.7; color:var(--studio-muted); }
+.admin-surface[data-admin-theme] .contact-settings-editor label { display:grid; gap:8px; margin:18px 0; color:var(--studio-muted); font-size:.82rem; font-weight:600; }
+
+.admin-surface .contact-settings-jump { display:block; }
+.admin-surface #contact-settings { scroll-margin-top:25px; }

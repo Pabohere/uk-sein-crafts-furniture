@@ -19,13 +19,12 @@ import "./product-options.css";
 import "./admin-studio.css";
 import "./storefront-theme.css";
 import "./storefront-polish.css";
+import "./liquid-glass.css";
+import "./admin-liquid-glass.css";
 
 export const metadata: Metadata = {
   title: "Uk Sein Crafts & Furniture | Yangon",
   description: "Handmade rattan furniture and local crafts from Yangon, Myanmar.",
-  other: {
-    "codex-preview": "Uk Sein Crafts & Furniture",
-  },
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",

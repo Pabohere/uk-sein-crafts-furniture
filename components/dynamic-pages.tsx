@@ -7,7 +7,51 @@ import { useEffect, useState } from "react";
 import { PageHeader } from "@/components/page-header";
 import { Cards, Footer, Header } from "@/components/store-shell";
 import { defaultContent, defaultEvents, readContent, readEvents, type EventPost, type StoreContent } from "@/lib/store-content";
-export function HomeContent() { const { language, version, t } = useLanguage(); const [content, setContent] = useState<StoreContent>(defaultContent); const [slide, setSlide] = useState(0); useEffect(() => { const refresh = () => setContent(readContent(language)); refresh(); window.addEventListener("storage", refresh); return () => window.removeEventListener("storage", refresh); }, [language, version]); const home = content.home; const images = home.heroImages.filter(Boolean); useEffect(() => { setSlide(0); if (images.length < 2) return; const timer = window.setInterval(() => setSlide((current) => (current + 1) % images.length), 4800); return () => window.clearInterval(timer); }, [images.length]); return <main><Header /><section className="hero motion-in"><div className="hero-copy"><p className="eyebrow">{home.eyebrow}</p><h1 lang={textLanguage(home.title, home.accent)}>{home.title}<br /><em>{home.accent}</em></h1><p className="intro">{home.intro}</p><Link className="gold-button" href="/collection">{home.cta} <ArrowRight size={18} /></Link></div><div className="hero-image" aria-label="Showroom gallery">{images.map((image, index) => <img className={index === slide ? "active" : ""} src={image} alt="Uk Sein furniture" key={image} />)}<div className="hero-dots">{images.map((_, index) => <button aria-label={`Show image ${index + 1}`} className={index === slide ? "active" : ""} onClick={() => setSlide(index)} key={index} />)}</div></div></section><section className="shop"><div className="section-head"><div><p className="eyebrow">{home.collectionEyebrow}</p><h2 lang={textLanguage(home.collectionHeading)}>{home.collectionHeading}</h2></div><Link className="text-link" href="/collection">{t("View all")} <ArrowRight size={17} /></Link></div><Cards /></section><Footer /></main>; }
+export function HomeContent() {
+  const { language, version, t } = useLanguage();
+  const [content, setContent] = useState<StoreContent>(defaultContent);
+  const [slide, setSlide] = useState(0);
+  useEffect(() => {
+    const refresh = () => setContent(readContent(language));
+    refresh();
+    window.addEventListener("storage", refresh);
+    return () => window.removeEventListener("storage", refresh);
+  }, [language, version]);
+  const home = content.home;
+  const images = home.heroImages.filter(Boolean);
+  useEffect(() => {
+    setSlide(0);
+    if (images.length < 2) return;
+    const timer = window.setInterval(() => setSlide(current => (current + 1) % images.length), 4800);
+    return () => window.clearInterval(timer);
+  }, [images.length]);
+  return <main>
+    <Header />
+    <section className="hero motion-in">
+      <div className="hero-copy">
+        <p className="eyebrow"><span className="glass-status-dot" aria-hidden="true" />{home.eyebrow}</p>
+        <h1 lang={textLanguage(home.title, home.accent)}>{home.title}<br /><em>{home.accent}</em></h1>
+        <p className="intro">{home.intro}</p>
+        <div className="hero-actions">
+          <Link className="gold-button" href="/collection">{home.cta}<ArrowRight size={18} /></Link>
+          <Link className="glass-secondary" href="/about">{t("About us")}<ArrowRight size={16} /></Link>
+        </div>
+        <div className="hero-benefits"><span>{t("Handcrafted locally")}</span><span>{t("Nationwide deliveries")}</span></div>
+      </div>
+      <div className="hero-image" aria-label="Showroom gallery">
+        {images.map((image, index) => <img className={index === slide ? "active" : ""} src={image} alt="Uk Sein furniture showroom" key={image} />)}
+        {images.length > 1 && <div className="hero-dots" aria-label={t("Showroom")}>
+          {images.map((_, index) => <button type="button" aria-label={`Show image ${index + 1}`} aria-pressed={index === slide} className={index === slide ? "active" : ""} onClick={() => setSlide(index)} key={index} />)}
+        </div>}
+      </div>
+    </section>
+    <section className="shop">
+      <div className="section-head"><div><p className="eyebrow">{home.collectionEyebrow}</p><h2 lang={textLanguage(home.collectionHeading)}>{home.collectionHeading}</h2></div><Link className="text-link" href="/collection">{t("View all")}<ArrowRight size={17} /></Link></div>
+      <Cards />
+    </section>
+    <Footer />
+  </main>;
+}
 export function AboutContent() { const { language, version } = useLanguage(); const [content, setContent] = useState<StoreContent>(defaultContent); useEffect(() => setContent(readContent(language)), [language, version]); const about = content.about; const values = [["01", about.value1Title, about.value1Text], ["02", about.value2Title, about.value2Text], ["03", about.value3Title, about.value3Text]]; return <main><Header /><PageHeader page="about" eyebrow={about.eyebrow} title={<span lang={textLanguage(about.title, about.accent)}>{about.title}<br /><em>{about.accent}</em></span>} intro={about.intro} /><section className="values">{values.map(([number, title, text]) => <div key={number}><b>{number}</b><h2 lang={textLanguage(title)}>{title}</h2><p>{text}</p></div>)}</section><Footer /></main>; }
 export function EventsContent() {
   const { language, version, t } = useLanguage();

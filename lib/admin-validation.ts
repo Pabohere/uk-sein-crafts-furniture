@@ -10,7 +10,7 @@ const image = (v: unknown) => string(v, 650000) && (v === '' || /^https:\/\//.te
 const fields = (v: unknown, required: string[], optional: string[] = []) => record(v) && required.every(k => string(v[k])) && Object.keys(v).every(k => [...required, ...optional].includes(k));
 export function validResource(name: Resource, value: unknown): boolean {
   if (name.startsWith('content_')) {
-    if (!record(value) || !['about,events,home','about,events,home,pageImages'].includes(Object.keys(value).sort().join())) return false;
+    if (!record(value) || !['home','about','events'].every(key => key in value) || Object.keys(value).some(key => !['home','about','events','pageImages','contact'].includes(key))) return false;
     const defaults = initialResources().content_en;
     for (const group of ['home','about','events'] as const) {
       const data = value[group];
@@ -20,6 +20,7 @@ export function validResource(name: Resource, value: unknown): boolean {
         else if (!string(item)) return false;
       }
     }
+    if (value.contact !== undefined && !fields(value.contact, Object.keys(defaults.contact!))) return false;
     if (value.pageImages !== undefined) {
       const headers = value.pageImages;
       if (!record(headers) || Object.keys(headers).sort().join() !== 'about,collection,contact,events') return false;

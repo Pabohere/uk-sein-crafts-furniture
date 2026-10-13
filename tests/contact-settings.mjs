@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import { build } from 'esbuild';
+const result = await build({stdin:{contents:`export * from './lib/store-content'; export * from './lib/admin-validation'; export * from './lib/public-data'; export * from './lib/preview-security';`,resolveDir:process.cwd()},bundle:true,platform:'node',format:'esm',write:false});
+const {defaultContent,defaultContact,validResource,readContent,saveContent,setPublicData,securePreviewResponse} = await import(`data:text/javascript;base64,${Buffer.from(result.outputFiles[0].text).toString('base64')}`);
+const legacy = structuredClone(defaultContent); delete legacy.contact;
+assert.equal(validResource('content_en',legacy),true,'existing published content remains valid');
+setPublicData({content_en:legacy});
+assert.deepEqual(readContent().contact,defaultContact,'old published data gains contact defaults');
+const updated=structuredClone(defaultContent);
+updated.contact.phone='09 123 456 789'; updated.contact.mapQuery='16.799,96.151'; updated.contact.openingHours='Monday–Saturday, 9 AM–5 PM';
+assert.equal(validResource('content_en',updated),true);
+for (const contact of [{...updated.contact,phone:123},{...updated.contact,unknown:'x'},{...updated.contact,address:'x'.repeat(10001)}]) assert.equal(validResource('content_en',{...updated,contact}),false);
+setPublicData({content_en:updated}); assert.deepEqual(readContent().contact,updated.contact,'published contact reaches storefront');
+setPublicData({}); const memory=new Map(); globalThis.window={};globalThis.localStorage={getItem:key=>memory.get(key)??null,setItem:(key,value)=>memory.set(key,value)};
+saveContent(updated);assert.deepEqual(readContent().contact,updated.contact,'local admin saves contact and map through reload');
+const policy=securePreviewResponse(new Response('test'),'test-nonce',true).headers.get('Content-Security-Policy');
+assert.ok(policy.includes('frame-src https://www.google.com;'));assert.ok(policy.includes("frame-ancestors 'none'"));
+console.log('Contact CMS backward compatibility, persistence, validation, and map policy checks passed.');
