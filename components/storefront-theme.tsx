@@ -1,10 +1,10 @@
 "use client";
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { useContext, useEffect, useState, type ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
 import { Moon, Sun } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
+import { SiteTheme } from '@/components/storefront-theme-context';
 type Mode = 'light' | 'dark';
-const SiteTheme = createContext<{ mode: Mode; toggle: () => void; ready: boolean } | null>(null);
 export function StorefrontThemeProvider({ children }: { children: ReactNode }) {
   const [mode, setMode] = useState<Mode>('light');
   const [ready, setReady] = useState(false);
@@ -20,7 +20,9 @@ export function StorefrontThemeProvider({ children }: { children: ReactNode }) {
   return <SiteTheme.Provider value={{ mode, toggle, ready }}><div className={admin ? undefined : 'storefront-surface'} data-site-theme={admin ? undefined : mode}>{children}</div></SiteTheme.Provider>;
 }
 export function StorefrontThemeToggle() {
-  const theme = useContext(SiteTheme); const { t } = useLanguage(); if (!theme) return null;
-  const label = t(theme.mode === 'light' ? 'Switch to dark mode' : 'Switch to light mode');
-  return <button className="site-theme-toggle" type="button" disabled={!theme.ready} aria-label={label} title={label} onClick={theme.toggle}>{theme.mode === 'light' ? <Moon size={18} /> : <Sun size={18} />}</button>;
+  const theme = useContext(SiteTheme); const { t } = useLanguage();
+  // Preserve the server's button while the provider is mounting or refreshing.
+  const mode = theme?.mode ?? 'light';
+  const label = t(mode === 'light' ? 'Switch to dark mode' : 'Switch to light mode');
+  return <button className="site-theme-toggle" type="button" disabled={!theme?.ready} aria-label={label} title={label} onClick={theme?.toggle}>{mode === 'light' ? <Moon size={18} /> : <Sun size={18} />}</button>;
 }

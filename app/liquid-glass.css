@@ -374,3 +374,24 @@ html[lang=my] .storefront-surface[data-site-theme] .promo { height: 42px; }
 @media(max-width:380px) {
   .storefront-surface[data-site-theme] .collection-pagination { display:grid; grid-template-columns:repeat(3,44px); justify-content:center; gap:12px; }
 }
+
+/* Cart text needs a stable contrast surface over bright and dark photography. */
+.storefront-surface[data-site-theme] .drawer.cart-dialog {
+  --cart-text:#082d47;--cart-secondary:#294b61;--cart-link:#684307;--cart-danger:#982e26;--cart-field:rgba(255,255,255,.88);
+  background:rgba(250,252,253,.9);color:var(--cart-text);
+  -webkit-backdrop-filter:blur(8px) saturate(115%);backdrop-filter:blur(8px) saturate(115%);
+}
+.storefront-surface[data-site-theme=dark] .drawer.cart-dialog {
+  --cart-text:#f7fbff;--cart-secondary:#d6e2eb;--cart-link:#f6cc83;--cart-danger:#ffb4aa;--cart-field:rgba(27,61,85,.92);
+  background:rgba(10,31,47,.94);
+}
+.storefront-surface[data-site-theme] .cart-dialog :is(h2,h3,.cart-size-label,.quantity,.cart-actions>div,.checkout label,.order-success h3,.order-receipt dd) { color:var(--cart-text); }
+.storefront-surface[data-site-theme] .cart-dialog .cart-item h3 { font-weight:700; }
+.storefront-surface[data-site-theme] .cart-dialog .cart-item p { color:var(--cart-secondary);font-size:.9rem;font-weight:600; }
+.storefront-surface[data-site-theme] .cart-dialog :is(.empty,.order-success p,.order-receipt dt,.checkout-actions>button:first-child) { color:var(--cart-secondary); }
+.storefront-surface[data-site-theme] .cart-dialog :is(.cart-size-label select,.quantity button,.checkout input,.checkout textarea) { background:var(--cart-field);color:var(--cart-text);border-color:var(--glass-line);font-weight:600; }
+.storefront-surface[data-site-theme] .cart-dialog :is(.checkout input,.checkout textarea)::placeholder { color:var(--cart-secondary); }
+.storefront-surface[data-site-theme] .cart-dialog .add-more-products { color:var(--cart-link);font-weight:700; }
+.storefront-surface[data-site-theme] .cart-dialog :is(.clear-cart,.order-error) { color:var(--cart-danger);font-weight:600; }
+.storefront-surface[data-site-theme] .cart-dialog .drawer-top>button { color:var(--cart-text); }
+.storefront-surface[data-site-theme] .cart-dialog .cart-actions>div { font-size:1.05rem; }

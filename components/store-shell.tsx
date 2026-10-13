@@ -71,6 +71,29 @@ export function Cards() {
 
 }
 
+export function HomeContactSection({ contact: suppliedContact }: { contact?: Partial<import("@/lib/store-content").ContactContent> }) {
+  const { t } = useLanguage();
+  const contact = { ...defaultContact, ...suppliedContact };
+  const query = encodeURIComponent(contact.mapQuery.trim() || contact.address);
+  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${query}`;
+  const phoneLink = (phone: string) => `tel:${phone.replace(/[^+0-9]/g, "")}`;
+  return <section className="home-contact" aria-labelledby="home-contact-title">
+    <div className="home-contact-heading"><p className="eyebrow">{contact.eyebrow || t("GET IN TOUCH")}</p><h2 id="home-contact-title" lang={textLanguage(contact.title)}>{contact.title || t("Contact Us")}</h2><p lang={textLanguage(contact.intro)}>{contact.intro}</p></div>
+    <div className="home-contact-grid">
+      <div className="home-contact-card home-contact-details"><p className="eyebrow">{t("Contact")}</p><h3>{t("Get in touch")}</h3>
+        {contact.phone && <a className="contact-row" href={phoneLink(contact.phone)}><Phone size={22} /><span><b>{t("Call us")}</b><small>{contact.phone}</small></span><ArrowRight size={18} /></a>}
+        {contact.secondaryPhone && <a className="contact-row" href={phoneLink(contact.secondaryPhone)}><Phone size={22} /><span><b>{t("Contact")}</b><small>{contact.secondaryPhone}</small></span><ArrowRight size={18} /></a>}
+        {contact.email && <a className="contact-row" href={`mailto:${contact.email}`}><Mail size={22} /><span><b>{t("Email us")}</b><small>{contact.email}</small></span><ArrowRight size={18} /></a>}
+      </div>
+      <div className="home-contact-card home-contact-showroom"><p className="eyebrow">{t("Showroom")}</p><h3 lang={textLanguage(contact.showroomName)}>{contact.showroomName}</h3><p lang={textLanguage(contact.address)}>{contact.address}</p>
+        {contact.openingHours && <p className="showroom-hours"><Clock size={18} /><span lang={textLanguage(contact.openingHours)}>{contact.openingHours}</span></p>}
+        <a className="gold-button" href={mapsUrl} target="_blank" rel="noopener noreferrer">{t("Open in Google Maps")}<ArrowRight size={18} /></a>
+      </div>
+    </div>
+    <div className="home-contact-map"><iframe title={`${contact.showroomName} — Google Maps`} src={`https://www.google.com/maps?q=${query}&output=embed`} loading="lazy" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen /></div>
+  </section>;
+}
+
 export function ContactDrawer() {
   const { t } = useLanguage();
   const content = useStoreContent();

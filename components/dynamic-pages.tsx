@@ -5,7 +5,7 @@ import { textLanguage } from "@/lib/typography";
 import { ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { PageHeader } from "@/components/page-header";
-import { Cards, Footer, Header } from "@/components/store-shell";
+import { Cards, Footer, Header, HomeContactSection } from "@/components/store-shell";
 import { defaultContent, defaultEvents, readContent, readEvents, type EventPost, type StoreContent } from "@/lib/store-content";
 export function HomeContent() {
   const { language, version, t } = useLanguage();
@@ -49,6 +49,7 @@ export function HomeContent() {
       <div className="section-head"><div><p className="eyebrow">{home.collectionEyebrow}</p><h2 lang={textLanguage(home.collectionHeading)}>{home.collectionHeading}</h2></div><Link className="text-link" href="/collection">{t("View all")}<ArrowRight size={17} /></Link></div>
       <Cards />
     </section>
+    <HomeContactSection contact={content.contact} />
     <Footer />
   </main>;
 }
